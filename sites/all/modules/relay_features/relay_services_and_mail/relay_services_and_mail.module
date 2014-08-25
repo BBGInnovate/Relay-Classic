@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Relay Services and Mail feature.
+ */
+
+include_once 'relay_services_and_mail.features.inc';

@@ -1,5 +1,5 @@
 name = "Pollfield"
-description = "Attache poll to any content type."
+description = "Attach a poll to any content type."
 package = "Field modules"
 core = "7.x"
 
@@ -8,4 +8,11 @@ core = "7.x"
 core = "7.x"
 project = "pollfield"
 datestamp = "1321101173"
+
+
+; Information added by drupal.org packaging script on 2013-10-01
+version = "7.x-2.x-dev"
+core = "7.x"
+project = "pollfield"
+datestamp = "1380623459"
 

@@ -11,7 +11,7 @@
 function _tweme_upgrade_jquery(&$js_config) {
   $source = theme_get_setting('jquery_source');
   if (module_exists('jquery_update') && $source != 'drupal') {
-    _tweme_admin_message(t('Tweme does not need <strong>jQuery Update</strong> module anymore! Please <a href="@modules">disable it</a>.', array('@modules' => url('admin/modules'))), 'warning');
+//    _tweme_admin_message(t('Tweme does not need <strong>jQuery Update</strong> module anymore! Please <a href="@modules">disable it</a>.', array('@modules' => url('admin/modules'))), 'warning');
     return;
   }
   $version = theme_get_setting('jquery_version');

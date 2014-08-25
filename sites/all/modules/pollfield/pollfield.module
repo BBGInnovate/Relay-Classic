@@ -409,8 +409,8 @@ function pollfield_field_widget_form(&$form, &$form_state, $field, $instance, $l
 
       if (isset($node->$field_name)) {
         global $language;
-        if (isset($node->$field_name[$language->language])) {
-          $field_lang = $node->$field_name[$language->language];
+        if (isset($node->{$field_name}[$language->language])) {
+          $field_lang = $node->{$field_name}[$language->language];
         }
         else {
           $field_lang = LANGUAGE_NONE;
@@ -1423,28 +1423,21 @@ function pollfield_node_delete($node) {
 }
 
 /**
- * Implements hook_cron().
- *
+ * Implementation of hook_cron().
  * Closes pollfields that have exceeded their allowed runtime.
  */
 function pollfield_cron() {
   $time = time();
-  $fields = field_read_fields(array('type' => 'pollfield_poll'));
-  foreach ($fields as $field_name => $field) {
-    $query = new EntityFieldQuery();
-    $query->entityCondition('entity_type', 'node')
-      ->fieldCondition($field_name, 'runtime', 0, '!=')
-      ->fieldCondition($field_name, 'runtime', $time, '+ node.created <')
-      ->fieldCondition($field_name, 'active', 1, '=')
-      ->propertyCondition('status', 1);
-    $result = $query->execute();
-
-    if (!empty($result['node'])) {
-      $nodes = node_load_multiple(array_keys($result['node']));
-      foreach ($nodes as $node) {
-        $node->{$field_name}[LANGUAGE_NONE][0]['active'] = 0;
-        field_attach_update('node', $node);
-      }
-    }
-  }
+	$fields_query = db_query("SELECT field_name FROM {field_config} WHERE type='pollfield_poll'");
+	while ($field_name=$fields_query->fetchField()){
+		$query="SELECT p.* FROM {field_revision_".$field_name."} p LEFT JOIN {node} n ON n.nid=p.entity_id WHERE (n.created + p.".$field_name."_runtime)<".$time;
+		$polls_query = db_query($query);
+		while ($polls=$polls_query->fetchObject()){
+			$query_update = "UPDATE {field_revision_".$field_name."} SET ".$field_name."_active = 0 WHERE entity_id=".$polls->entity_id." AND delta = ".$polls->delta;
+			db_query($query_update);
+			$query_update = "UPDATE {field_data_".$field_name."} SET ".$field_name."_active = 0 WHERE entity_id=".$polls->entity_id." AND delta = ".$polls->delta;
+			db_query($query_update);
+		}
+	}
+  
 }

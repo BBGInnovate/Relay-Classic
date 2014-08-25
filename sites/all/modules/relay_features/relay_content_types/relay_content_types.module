@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Relay Content Types feature.
+ */
+
+include_once 'relay_content_types.features.inc';
