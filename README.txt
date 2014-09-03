@@ -1,3 +1,6 @@
+(1) Please refer to the file called "Instructions on creating a Relay site" for configuring your Relay instance.
+(2) For setting up email, social media accounts, and how to use Relay, please refer to the "How to use Relay 1" document.
+
 
 CONTENTS OF THIS FILE
 ---------------------
